@@ -3,16 +3,15 @@ import { Container, Button, Box, Card, Stack, CardMedia, CardActionArea, Typogra
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../apiService";
-import { useDispatch } from "react-redux";
-import { removeBooks } from "../features/books/booksSlice";
+// import api from "../apiService";
+import { useDispatch, useSelector } from "react-redux";
+import { removeBooks, getFavorite } from "../features/books/booksSlice";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const ReadingPage = () => {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [removedBookId, setRemovedBookId] = useState("");
+  const loading = false;
   const navigate = useNavigate()
 
   const handleClickBook = (bookId) => {
@@ -20,25 +19,40 @@ const ReadingPage = () => {
   };
 
   const dispatch = useDispatch();
+  const allbooks = useSelector((state) => state.books.bookslist);
 
   const removeBook = (bookId) => {
     dispatch(removeBooks({bookId}));
   };
 
   useEffect(() => {
-    if (removedBookId) return;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get(`/favorites`);
-        setBooks(res.data);
-      } catch (error) {
-        toast(error.message);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [removedBookId]);
+    try{
+      dispatch(getFavorite());
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    setBooks(allbooks);
+  }, [allbooks]);
+
+  console.log("ALLBOOKS", allbooks);
+
+  // useEffect(() => {
+  //   if (removedBookId) return;
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await api.get(`/favorites`);
+  //       setBooks(res.data);
+  //     } catch (error) {
+  //       toast(error.message);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, [removedBookId]);
 
   // useEffect(() => {
   //   if (!removedBookId) return;

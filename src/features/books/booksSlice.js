@@ -8,6 +8,8 @@ const initialState = {
     addingBook: null,
     removingBook: null,
     gettingBooks: null,
+    book: null,
+    bookslist: null,
   };
 
 export const slice = createSlice({
@@ -31,13 +33,19 @@ export const slice = createSlice({
         state.isLoading = false;
         state.error = null;
         const getBooks = action.payload;
-        state.bookid = getBooks.id;
+        state.book = getBooks;
     },
     removeBookSuccess(state, action) {
         state.isLoading = false;
         state.error = null;
         const removeBook = action.payload;
         state.removingBook = removeBook.id;
+    },
+    getFavoriteSuccess(state, action) {
+        state.isLoading = false;
+        state.error = null;
+        const allBooks = action.payload;
+        state.bookslist = allBooks;
     }
   },
 });
@@ -63,8 +71,8 @@ export const removeBooks =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      await api.delete(`/favorites/${bookId}`);
-      dispatch(slice.actions.removeBookSuccess({ id: bookId }));
+      const response = await api.delete(`/favorites/${bookId}`);
+      dispatch(slice.actions.removeBookSuccess(response.data));
       toast.success("The book has been removed");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -73,15 +81,27 @@ export const removeBooks =
   };
 
 export const getBook = 
-    ({ bookId }, book) =>
+    ({ bookId }) =>
     async (dispatch) => {
         dispatch(slice.actions.startLoading());
         try {
         const response = await api.get(`/books/${bookId}`);
-        book = {...response.data};
         dispatch(slice.actions.getBookSuccess(response.data));
         } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
         }
     };
+
+export const getFavorite = 
+    () =>
+    async (dispatch) => {
+        dispatch(slice.actions.startLoading());
+        try {
+        const response = await api.get(`/favorites`);
+        dispatch(slice.actions.getFavoriteSuccess(response.data));
+        } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+        }
+    }

@@ -2,29 +2,40 @@ import React, { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../apiService";
+
 import { Container, Button, Box, Grid, Stack, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addBook, getBook } from "../features/books/booksSlice";
 
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const BookDetailPage = () => {
-  const [loading, setLoading] = useState(false);
-  // const [book, setBook] = useState(null);
-  const book = null;
+  const loading = false;
+  const [book, setBook] = useState(null);
   // const [addingBook, setAddingBook] = useState(false);
   const params = useParams();
   const bookId = params.id;
 
   const dispatch = useDispatch();
+  const bookFromState = useSelector((state) => state.books.book);
 
-  const addToReadingList = (book) => {
-    dispatch(addBook({ book }));
+  const addToReadingList = (addbook) => {
+    dispatch(addBook({ addbook }));
   };
 
-  dispatch(getBook({ bookId }), book);
+  useEffect(() => {
+    try{
+      dispatch(getBook({ bookId }));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }, [bookId, dispatch]);
+
+  useEffect(() => {
+    setBook(bookFromState);
+  }, [bookFromState]);
+
 
   // useEffect(() => {
   //   const fetchData = async () => {

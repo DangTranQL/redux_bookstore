@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { Container, Alert, Box, Card, Stack, CardMedia, CardActionArea, Typography, CardContent } from "@mui/material";
 
 
-
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const HomePage = () => {
