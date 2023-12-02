@@ -6,7 +6,7 @@ const initialState = {
     isLoading: false,
     error: null,
     addingBook: null,
-    bookid: null,
+    // bookid: null,
   };
 
 export const slice = createSlice({
@@ -26,12 +26,12 @@ export const slice = createSlice({
         const newBook = action.payload;
         state.addingBook = newBook.id;
     },
-    getBookSuccess(state, action) {
-        state.isLoading = false;
-        state.error = null;
-        const getBooks = action.payload;
-        state.bookid = getBooks.id;
-    },
+    // getBookSuccess(state, action) {
+    //     state.isLoading = false;
+    //     state.error = null;
+    //     const getBooks = action.payload;
+    //     state.bookid = getBooks.id;
+    // },
   },
 });
 
@@ -43,7 +43,7 @@ export const addBook =
     dispatch(slice.actions.startLoading());
     try {
       const response = await api.post(`/favorites`, book);
-      dispatch(slice.actions.createPostSuccess(response.data));
+      dispatch(slice.actions.addBookSuccess(response.data));
       toast.success("The book has been added to the reading list!");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -52,15 +52,15 @@ export const addBook =
   };
 
 
-export const getBook = 
-    ({ bookId }) =>
-    async (dispatch) => {
-        dispatch(slice.actions.startLoading());
-        try {
-        const response = await api.get(`/books/${bookId}`);
-        dispatch(slice.actions.getBookSuccess(response.data));
-        } catch (error) {
-        dispatch(slice.actions.hasError(error.message));
-        toast.error(error.message);
-        }
-    };
+// export const getBook = 
+//     ({ bookId }) =>
+//     async (dispatch) => {
+//         dispatch(slice.actions.startLoading());
+//         try {
+//         const response = await api.get(`/books/${bookId}`);
+//         dispatch(slice.actions.getBookSuccess(response.data));
+//         } catch (error) {
+//         dispatch(slice.actions.hasError(error.message));
+//         toast.error(error.message);
+//         }
+//     };
