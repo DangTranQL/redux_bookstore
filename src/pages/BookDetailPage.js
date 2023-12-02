@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 import api from "../apiService";
 import { Container, Button, Box, Grid, Stack, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addBook } from "../features/books/booksSlice";
+import { addBook, getBook } from "../features/books/booksSlice";
 
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const BookDetailPage = () => {
   const [loading, setLoading] = useState(false);
-  const [book, setBook] = useState(null);
+  // const [book, setBook] = useState(null);
+  const book = null;
   // const [addingBook, setAddingBook] = useState(false);
   const params = useParams();
   const bookId = params.id;
@@ -23,19 +24,21 @@ const BookDetailPage = () => {
     dispatch(addBook({ book }));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get(`/books/${bookId}`);
-        setBook(res.data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [bookId]);
+  dispatch(getBook({ bookId }), book);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await api.get(`/books/${bookId}`);
+  //       setBook(res.data);
+  //     } catch (error) {
+  //       toast.error(error.message);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, [bookId]);
 
 
 

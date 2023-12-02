@@ -1,28 +1,6 @@
 {
   "favorites": [
     {
-      "author": "Chinua Achebe",
-      "country": "Nigeria",
-      "imageLink": "images/things-fall-apart.jpg",
-      "language": "English",
-      "link": "https://en.wikipedia.org/wiki/Things_Fall_Apart\n",
-      "pages": 209,
-      "title": "Things Fall Apart",
-      "year": 1958,
-      "id": "8F627C92410"
-    },
-    {
-      "author": "Unknown",
-      "country": "Sumer and Akkadian Empire",
-      "imageLink": "images/the-epic-of-gilgamesh.jpg",
-      "language": "Akkadian",
-      "link": "https://en.wikipedia.org/wiki/Epic_of_Gilgamesh\n",
-      "pages": 160,
-      "title": "The Epic Of Gilgamesh",
-      "year": -1700,
-      "id": "4F45963BC33"
-    },
-    {
       "author": "Jane Austen",
       "country": "United Kingdom",
       "imageLink": "images/pride-and-prejudice.jpg",

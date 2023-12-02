@@ -4,6 +4,8 @@ import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../apiService";
+import { useDispatch } from "react-redux";
+import { removeBooks } from "../features/books/booksSlice";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
@@ -17,8 +19,10 @@ const ReadingPage = () => {
     navigate(`/books/${bookId}`);
   };
 
+  const dispatch = useDispatch();
+
   const removeBook = (bookId) => {
-    setRemovedBookId(bookId);
+    dispatch(removeBooks({bookId}));
   };
 
   useEffect(() => {
@@ -36,21 +40,21 @@ const ReadingPage = () => {
     fetchData();
   }, [removedBookId]);
 
-  useEffect(() => {
-    if (!removedBookId) return;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        await api.delete(`/favorites/${removedBookId}`);
-        toast.success("The book has been removed");
-        setRemovedBookId("");
-      } catch (error) {
-        toast(error.message);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [removedBookId]);
+  // useEffect(() => {
+  //   if (!removedBookId) return;
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       await api.delete(`/favorites/${removedBookId}`);
+  //       toast.success("The book has been removed");
+  //       setRemovedBookId("");
+  //     } catch (error) {
+  //       toast(error.message);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, [removedBookId]);
 
   return (
     <Container>

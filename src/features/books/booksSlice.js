@@ -6,7 +6,8 @@ const initialState = {
     isLoading: false,
     error: null,
     addingBook: null,
-    // bookid: null,
+    removingBook: null,
+    gettingBooks: null,
   };
 
 export const slice = createSlice({
@@ -26,12 +27,18 @@ export const slice = createSlice({
         const newBook = action.payload;
         state.addingBook = newBook.id;
     },
-    // getBookSuccess(state, action) {
-    //     state.isLoading = false;
-    //     state.error = null;
-    //     const getBooks = action.payload;
-    //     state.bookid = getBooks.id;
-    // },
+    getBookSuccess(state, action) {
+        state.isLoading = false;
+        state.error = null;
+        const getBooks = action.payload;
+        state.bookid = getBooks.id;
+    },
+    removeBookSuccess(state, action) {
+        state.isLoading = false;
+        state.error = null;
+        const removeBook = action.payload;
+        state.removingBook = removeBook.id;
+    }
   },
 });
 
@@ -51,16 +58,30 @@ export const addBook =
     }
   };
 
+export const removeBooks =
+  ({ bookId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await api.delete(`/favorites/${bookId}`);
+      dispatch(slice.actions.removeBookSuccess({ id: bookId }));
+      toast.success("The book has been removed");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
-// export const getBook = 
-//     ({ bookId }) =>
-//     async (dispatch) => {
-//         dispatch(slice.actions.startLoading());
-//         try {
-//         const response = await api.get(`/books/${bookId}`);
-//         dispatch(slice.actions.getBookSuccess(response.data));
-//         } catch (error) {
-//         dispatch(slice.actions.hasError(error.message));
-//         toast.error(error.message);
-//         }
-//     };
+export const getBook = 
+    ({ bookId }, book) =>
+    async (dispatch) => {
+        dispatch(slice.actions.startLoading());
+        try {
+        const response = await api.get(`/books/${bookId}`);
+        book = {...response.data};
+        dispatch(slice.actions.getBookSuccess(response.data));
+        } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+        }
+    };
