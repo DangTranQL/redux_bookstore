@@ -9,7 +9,7 @@ const initialState = {
     removingBook: null,
     gettingBooks: null,
     book: null,
-    bookslist: null,
+    bookslist: [],
   };
 
 export const slice = createSlice({
@@ -46,6 +46,7 @@ export const slice = createSlice({
         state.error = null;
         const allBooks = action.payload;
         state.bookslist = allBooks;
+        console.log("ALLBOOKS", state.bookslist);
     }
   },
 });
@@ -53,7 +54,7 @@ export const slice = createSlice({
 export default slice.reducer;
 
 export const addBook =
-  ({ book }) =>
+  (book) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {

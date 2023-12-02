@@ -31,13 +31,11 @@ const ReadingPage = () => {
     } catch (error) {
       toast.error(error.message);
     }
-  }, [dispatch]);
+  }, [allbooks, dispatch]);
 
   useEffect(() => {
     setBooks(allbooks);
   }, [allbooks]);
-
-  console.log("ALLBOOKS", allbooks);
 
   // useEffect(() => {
   //   if (removedBookId) return;

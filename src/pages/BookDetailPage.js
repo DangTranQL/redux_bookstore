@@ -20,8 +20,8 @@ const BookDetailPage = () => {
   const dispatch = useDispatch();
   const bookFromState = useSelector((state) => state.books.book);
 
-  const addToReadingList = (addbook) => {
-    dispatch(addBook({ addbook }));
+  const addToReadingList = (book) => {
+    dispatch(addBook(book));
   };
 
   useEffect(() => {
